@@ -8,6 +8,7 @@ namespace snippets
 
 class MultiInvokeVisitor
 {
+  public:
     int stub();
 };
 
