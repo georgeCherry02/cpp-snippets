@@ -4,6 +4,7 @@ project(
     LANGUAGES C
               CXX
 )
+set(CMAKE_CXX_STANDARD 23)
 
 enable_testing()
 
