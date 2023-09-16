@@ -79,9 +79,25 @@ class MultiInvokeVisitor
             std::forward<VARIANT>(variant));
     }
 
+    template <typename IntType, IntType... Idxs, typename... ARGS>
+    constexpr void apply_helper(std::integer_sequence<IntType, Idxs...>, ARGS&&... args)
+    {
+        // The fold expression allows us to call our currying logic with all the
+        // handlers this dispatcher has been instantiated with
+        // We don't forward the ARGS here as it could lead to UB with moves
+        // within a fold expression (that of the handlers)
+        (curry(std::get<Idxs>(d_handlers), args...), ...);
+    }
+
   public:
     explicit MultiInvokeVisitor(HANDLERS... handlers)
         : d_handlers{std::move(handlers)...} {};
+
+    template <typename... ARGS>
+    constexpr void operator()(ARGS&&... args) const
+    {
+        apply_helper(std::make_index_sequence<sizeof...(HANDLERS)>(), std::forward<ARGS>(args)...);
+    }
 
     int stub();
 };
