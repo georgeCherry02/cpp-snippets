@@ -6,6 +6,16 @@
 namespace snippets
 {
 
+template <typename T>
+struct is_variant : std::false_type
+{
+};
+
+template <typename... V>
+struct is_variant<std::variant<V...>> : std::true_type
+{
+};
+
 class MultiInvokeVisitor
 {
   public:
