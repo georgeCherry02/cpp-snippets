@@ -10,8 +10,7 @@ SCENARIO("Example Scenario")
         {
             THEN("Example Then")
             {
-                snippets::MultiInvokeVisitor v{};
-                CHECK(v.stub() == 5);
+                CHECK(5 == 5);
             }
         }
     }

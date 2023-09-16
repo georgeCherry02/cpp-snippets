@@ -98,8 +98,6 @@ class MultiInvokeVisitor
     {
         apply_helper(std::make_index_sequence<sizeof...(HANDLERS)>(), std::forward<ARGS>(args)...);
     }
-
-    int stub();
 };
 
 template <typename... HANDLERS>
