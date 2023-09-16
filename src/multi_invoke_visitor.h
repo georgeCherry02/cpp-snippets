@@ -21,11 +21,11 @@ struct is_variant<std::variant<V...>> : std::true_type
 template <typename T>
 constexpr bool is_variant_v = is_variant<T>::value;
 
-template <typename... Handlers>
+template <typename... HANDLERS>
 class MultiInvokeVisitor
 {
   private:
-    std::tuple<Handlers...> d_handlers;
+    std::tuple<HANDLERS...> d_handlers;
 
     // Base case
     template <typename CURRIED_FUNC>
@@ -80,16 +80,16 @@ class MultiInvokeVisitor
     }
 
   public:
-    explicit MultiInvokeVisitor(Handlers... handlers)
+    explicit MultiInvokeVisitor(HANDLERS... handlers)
         : d_handlers{std::move(handlers)...} {};
 
     int stub();
 };
 
-template <typename... Handlers>
-constexpr decltype(auto) make_dispatcher(Handlers&&... handlers)
+template <typename... HANDLERS>
+constexpr decltype(auto) make_dispatcher(HANDLERS&&... handlers)
 {
-    return MultiInvokeVisitor<std::decay_t<Handlers>...>{std::forward<Handlers>(handlers)...};
+    return MultiInvokeVisitor<std::decay_t<HANDLERS>...>{std::forward<HANDLERS>(handlers)...};
 }
 
 } // namespace snippets
