@@ -1,3 +1,16 @@
+/* MultiInvokeVisitor
+ *
+ * This is a kinda dumb visitor that's going to call any signature you give it
+ * if it can. The fact it will implicitly cast and call multiple functions it's
+ * "visiting" if it's possible is core to it's purpose - typically a normal
+ * visitor's going to be sufficient, so it's redundant in most scenarios.
+ *
+ * Note the currying approach was used to get around the fact that a normal
+ * std::visit requires all arguments to be variants - a more hacky approach to
+ * this but one that leads to simpler code is to just wrap anything that isn't
+ * a variant into a variant of one variety. This can be done quite easily with
+ * the is_variant type trait below.
+ */
 #ifndef INCLUDED_MULTI_INVOKE_VISITOR_H
 #define INCLUDED_MULTI_INVOKE_VISITOR_H
 
