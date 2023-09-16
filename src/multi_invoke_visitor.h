@@ -22,10 +22,12 @@ class MultiInvokeVisitor
   private:
     std::tuple<Handlers...> d_handlers;
 
+    // Base case
     template <typename CURRIED_FUNC>
-    constexpr void curry(CURRIED_FUNC&& func) {
+    constexpr void curry(CURRIED_FUNC&& func)
+    {
         std::forward<CURRIED_FUNC>(func)();
-    }
+    };
 
 
   public:
