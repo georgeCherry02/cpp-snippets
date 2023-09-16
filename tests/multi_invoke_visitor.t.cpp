@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <multi_invoke_visitor.h>
+#include <variant>
 
 struct TestStruct
 {
@@ -53,9 +54,28 @@ SCENARIO("Basic usage of the visitor")
         {
             dispatcher(test_int);
             dispatcher(test_string);
-            THEN("The variant is appropriately unpacked, and the flag is modified") {
+            THEN("The variant is appropriately unpacked, and the flag is modified")
+            {
                 CHECK(int_called);
                 CHECK(string_called);
+            }
+        }
+    }
+    GIVEN("A variant and a dispatcher with functions allowing implicit cast of variant members")
+    {
+        using TestVariant = std::variant<int, double>;
+        TestVariant test_int{int{0}};
+        CHECK(std::holds_alternative<int>(test_int));
+        bool        int_called, double_called;
+        auto        dispatcher = snippets::make_dispatcher(
+            [&int_called](int) { int_called = true; }, [&double_called](double) { double_called = true; });
+        WHEN("The dispatcher is called with the variant")
+        {
+            dispatcher(test_int);
+            THEN("The variant is appropriately unpacked, and the multiple flags are modified")
+            {
+                CHECK(int_called);
+                CHECK(double_called);
             }
         }
     }
