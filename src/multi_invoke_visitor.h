@@ -22,6 +22,12 @@ class MultiInvokeVisitor
   private:
     std::tuple<Handlers...> d_handlers;
 
+    template <typename CURRIED_FUNC>
+    constexpr void curry(CURRIED_FUNC&& func) {
+        std::forward<CURRIED_FUNC>(func)();
+    }
+
+
   public:
     explicit MultiInvokeVisitor(Handlers... handlers)
         : d_handlers{std::move(handlers)...} {};
