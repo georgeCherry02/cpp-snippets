@@ -29,13 +29,13 @@ class MultiInvokeVisitor
 
     // Base case
     template <typename CURRIED_FUNC>
-    constexpr void curry(CURRIED_FUNC&& func)
+    constexpr void curry(CURRIED_FUNC&& func) const
     {
         std::forward<CURRIED_FUNC>(func)();
     };
 
     template <typename FUNC, typename FIRST, typename... REST>
-    constexpr void curry(FUNC&& func, FIRST&& first, REST&&... rest)
+    constexpr void curry(FUNC&& func, FIRST&& first, REST&&... rest) const
     {
         if constexpr (is_variant_v<std::decay_t<FIRST>>)
         {
@@ -58,7 +58,7 @@ class MultiInvokeVisitor
     }
 
     template <typename FUNC, typename VARIANT, typename... REST>
-    constexpr void expand_variant(FUNC&& func, VARIANT&& variant, REST&&... rest)
+    constexpr void expand_variant(FUNC&& func, VARIANT&& variant, REST&&... rest) const
     {
         // We can use a lambda accepting auto&& as regardless of the alternative
         // contained within the variant we want to call the curring function with
@@ -80,7 +80,7 @@ class MultiInvokeVisitor
     }
 
     template <typename IntType, IntType... Idxs, typename... ARGS>
-    constexpr void apply_helper(std::integer_sequence<IntType, Idxs...>, ARGS&&... args)
+    constexpr void apply_helper(std::integer_sequence<IntType, Idxs...>, ARGS&&... args) const
     {
         // The fold expression allows us to call our currying logic with all the
         // handlers this dispatcher has been instantiated with
