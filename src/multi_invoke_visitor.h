@@ -51,7 +51,7 @@ class MultiInvokeVisitor
                 // Hence the constexpr invoke check needs to be here
                 if constexpr (std::is_invocable_v<FUNC, FIRST, decltype(rest)...>)
                 {
-                    func(std::forward<FIRST>(first), std::forward<REST>(rest)...);
+                    func(std::forward<FIRST>(first), std::forward<decltype(rest)>(rest)...);
                 }
             },
             std::forward<REST>(rest)...);
