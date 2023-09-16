@@ -1,6 +1,7 @@
 #ifndef INCLUDED_MULTI_INVOKE_VISITOR_H
 #define INCLUDED_MULTI_INVOKE_VISITOR_H
 
+#include <utility>
 #include <variant>
 
 namespace snippets
@@ -16,6 +17,9 @@ struct is_variant<std::variant<V...>> : std::true_type
 {
 };
 
+template <typename T>
+constexpr bool is_variant_v = is_variant<T>::value;
+
 template <typename... Handlers>
 class MultiInvokeVisitor
 {
@@ -29,6 +33,28 @@ class MultiInvokeVisitor
         std::forward<CURRIED_FUNC>(func)();
     };
 
+    template <typename FUNC, typename FIRST, typename... REST>
+    constexpr void curry(FUNC&& func, FIRST&& first, REST&&... rest)
+    {
+        if constexpr (is_variant_v<std::decay_t<FIRST>>)
+        {
+            // Visit the variant to unfold
+            return curry_variant(std::forward<FUNC>(func), std::forward<FIRST>(first), std::forward<REST>(rest)...);
+        }
+
+        // Curry the func with the first argument and then use tail recursion
+        // to move on to the next argument
+        curry(
+            [&first, &func](auto&&... rest) {
+                // Note the type of `rest` here is different to the `REST` in the encapsulating function
+                // Hence the constexpr invoke check needs to be here
+                if constexpr (std::is_invocable_v<FUNC, FIRST, decltype(rest)...>)
+                {
+                    func(std::forward<FIRST>(first), std::forward<REST>(rest)...);
+                }
+            },
+            std::forward<REST>(rest)...);
+    }
 
   public:
     explicit MultiInvokeVisitor(Handlers... handlers)
