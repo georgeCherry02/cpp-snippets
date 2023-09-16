@@ -41,4 +41,22 @@ SCENARIO("Basic usage of the visitor")
             }
         }
     }
+    GIVEN("A variant and a dispatcher to handle said variant")
+    {
+        using TestVariant = std::variant<int, std::string>;
+        TestVariant test_int{int{0}};
+        TestVariant test_string{std::string{"Hi"}};
+        bool        int_called, string_called;
+        auto        dispatcher = snippets::make_dispatcher(
+            [&int_called](int) { int_called = true; }, [&string_called](std::string) { string_called = true; });
+        WHEN("The dispatcher is called with each variant")
+        {
+            dispatcher(test_int);
+            dispatcher(test_string);
+            THEN("The variant is appropriately unpacked, and the flag is modified") {
+                CHECK(int_called);
+                CHECK(string_called);
+            }
+        }
+    }
 }
