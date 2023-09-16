@@ -79,4 +79,27 @@ SCENARIO("Basic usage of the visitor")
             }
         }
     }
+    GIVEN("A variant and a dispatcher functions accepting references")
+    {
+        using TestVariant = std::variant<int, double>;
+        TestVariant test_int{int{0}};
+        CHECK(std::holds_alternative<int>(test_int));
+        bool int_called, double_called;
+        auto        dispatcher = snippets::make_dispatcher(
+            [&int_called](std::string& call_flag, int) { int_called = true; call_flag = "int called"; }, [&double_called](std::string& call_flag, double) { double_called = true; call_flag = "double called"; });
+        WHEN("The dispatcher is called with the variant")
+        {
+            std::string call_flag{};
+            dispatcher(call_flag, test_int);
+            THEN("The variant is appropriately unpacked and both functions are called reliant on implicit cast")
+            {
+                CHECK(int_called);
+                CHECK(double_called);
+            }
+            THEN("The string is properly taken by reference and the order of resolution is that in which handlers are passed to the dispatcher's constructor")
+            {
+                CHECK(call_flag == "double called");
+            }
+        }
+    }
 }
