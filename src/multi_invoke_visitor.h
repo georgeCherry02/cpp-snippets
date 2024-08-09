@@ -45,7 +45,7 @@ class MultiInvokeVisitor
     constexpr void curry(CURRIED_FUNC&& func) const
     {
         std::forward<CURRIED_FUNC>(func)();
-    };
+    }
 
     template <typename FUNC, typename FIRST, typename... REST>
     constexpr void curry(FUNC&& func, FIRST&& first, REST&&... rest) const
