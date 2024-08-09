@@ -3,6 +3,7 @@ find_package(Catch2 3 REQUIRED)
 add_executable(
     cpp_snippet_tests
     multi_invoke_visitor.t.cpp
+    pointer_to_member.t.cpp
 )
 
 target_link_libraries(

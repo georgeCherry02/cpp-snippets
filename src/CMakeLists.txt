@@ -2,6 +2,7 @@ add_library(
     cpp_snippets
     STATIC
     multi_invoke_visitor.cpp
+    pointer_to_member.cpp
 )
 
 target_include_directories(
