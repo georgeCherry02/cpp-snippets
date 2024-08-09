@@ -11,8 +11,8 @@
  * a variant into a variant of one variety. This can be done quite easily with
  * the is_variant type trait below.
  */
-#ifndef INCLUDED_MULTI_INVOKE_VISITOR_H
-#define INCLUDED_MULTI_INVOKE_VISITOR_H
+#ifndef INCLUDED_SNIPPETS_MULTI_INVOKE_VISITOR_H
+#define INCLUDED_SNIPPETS_MULTI_INVOKE_VISITOR_H
 
 #include <tuple>
 #include <utility>

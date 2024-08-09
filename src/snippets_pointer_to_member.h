@@ -1,10 +1,12 @@
-#ifndef INCLUDED_POINTER_TO_MEMBER_H
-#define INCLUDED_POINTER_TO_MEMBER_H
+#ifndef INCLUDED_SNIPPETS_POINTER_TO_MEMBER_H
+#define INCLUDED_SNIPPETS_POINTER_TO_MEMBER_H
+
+#include <snippets_type_traits.h>
 
 #include <iostream>
-#include <string>
-#include <string_view>
 #include <tuple>
+
+namespace snippets {
 
 template <const char *NAME, typename BOUND_OBJECT, typename MEMBER_TYPE>
 struct StreamableMember {
@@ -51,14 +53,10 @@ void stream_impl(std::ostream &os, const STREAMABLE &streamable,
                            (Idx < streamable.schema.STREAM_SIZE - 1)));
 }
 
-template <typename, typename> struct is_same_template : std::false_type {};
-
-template <template <typename...> class T, typename... A, typename... B>
-struct is_same_template<T<A...>, T<B...>> : std::true_type {};
-
 template <typename STREAMABLE>
 concept IsStreamable =
-    is_same_template<std::decay_t<decltype(STREAMABLE::schema)>, StreamSchema<>>::value;
+    is_same_template<std::decay_t<decltype(STREAMABLE::schema)>,
+                     StreamSchema<>>::value;
 
 template <IsStreamable STREAMABLE>
 std::ostream &operator<<(std::ostream &os, const STREAMABLE &streamable) {
@@ -68,5 +66,7 @@ std::ostream &operator<<(std::ostream &os, const STREAMABLE &streamable) {
   os << "}";
   return os;
 }
+
+} // namespace snippets
 
 #endif

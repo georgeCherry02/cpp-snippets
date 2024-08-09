@@ -1,4 +1,4 @@
-#include <pointer_to_member.h>
+#include <snippets_pointer_to_member.h>
 
 #include <catch2/catch_test_macros.hpp>
 

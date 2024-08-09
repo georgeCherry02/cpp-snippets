@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <multi_invoke_visitor.h>
+#include <snippets_multi_invoke_visitor.h>
 #include <variant>
 
 struct TestStruct
