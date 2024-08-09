@@ -51,7 +51,16 @@ void stream_impl(std::ostream &os, const STREAMABLE &streamable,
                            (Idx < streamable.schema.STREAM_SIZE - 1)));
 }
 
+template <typename, typename> struct is_same_template : std::false_type {};
+
+template <template <typename...> class T, typename... A, typename... B>
+struct is_same_template<T<A...>, T<B...>> : std::true_type {};
+
 template <typename STREAMABLE>
+concept IsStreamable =
+    is_same_template<std::decay_t<decltype(STREAMABLE::schema)>, StreamSchema<>>::value;
+
+template <IsStreamable STREAMABLE>
 std::ostream &stream(std::ostream &os, const STREAMABLE &streamable) {
   os << "{ ";
   stream_impl(os, streamable,
