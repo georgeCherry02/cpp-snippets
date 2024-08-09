@@ -23,7 +23,7 @@ SCENARIO("Basic usage of the streamable") {
     Person person{.name = std::string{"Keir Starmer"}, .age = 61};
     std::stringstream oss;
     WHEN("The streamable object is streamed") {
-      stream(oss, person);
+      oss << person;
       THEN("The output is expected") {
         CHECK(oss.str() == "{ name: Keir Starmer, age: 61 }");
       }

@@ -61,7 +61,7 @@ concept IsStreamable =
     is_same_template<std::decay_t<decltype(STREAMABLE::schema)>, StreamSchema<>>::value;
 
 template <IsStreamable STREAMABLE>
-std::ostream &stream(std::ostream &os, const STREAMABLE &streamable) {
+std::ostream &operator<<(std::ostream &os, const STREAMABLE &streamable) {
   os << "{ ";
   stream_impl(os, streamable,
               std::make_index_sequence<streamable.schema.STREAM_SIZE>());
