@@ -10,3 +10,11 @@ target_include_directories(
     .
 )
 
+target_compile_options(
+    cpp_snippets
+    PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Werror
+)
