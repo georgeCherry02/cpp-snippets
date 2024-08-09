@@ -40,7 +40,7 @@ concept IsStreamable =
     is_same_template<std::decay_t<decltype(STREAMABLE::schema)>,
                      StreamSchema<>>::value;
 
-template <typename STREAMABLE, typename MEMBER>
+template <IsStreamable STREAMABLE, typename MEMBER>
 void stream_member_impl(std::ostream &os, const STREAMABLE &streamable,
                         const MEMBER &member_def, bool is_not_last) {
   os << member_def.name << ": " << streamable.*(member_def.member);
@@ -50,7 +50,7 @@ void stream_member_impl(std::ostream &os, const STREAMABLE &streamable,
   os << " ";
 };
 
-template <typename STREAMABLE, typename IntType, IntType... Idx>
+template <IsStreamable STREAMABLE, typename IntType, IntType... Idx>
 void stream_impl(std::ostream &os, const STREAMABLE &streamable,
                  std::integer_sequence<IntType, Idx...>) {
   (..., stream_member_impl(os, streamable,
