@@ -35,6 +35,11 @@ constexpr auto make_schema(STREAMABLES &&...streamables) {
   return StreamSchema{std::forward<STREAMABLES>(streamables)...};
 }
 
+template <typename STREAMABLE>
+concept IsStreamable =
+    is_same_template<std::decay_t<decltype(STREAMABLE::schema)>,
+                     StreamSchema<>>::value;
+
 template <typename STREAMABLE, typename MEMBER>
 void stream_member_impl(std::ostream &os, const STREAMABLE &streamable,
                         const MEMBER &member_def, bool is_not_last) {
@@ -52,11 +57,6 @@ void stream_impl(std::ostream &os, const STREAMABLE &streamable,
                            std::get<Idx>(streamable.schema.streamables),
                            (Idx < streamable.schema.STREAM_SIZE - 1)));
 }
-
-template <typename STREAMABLE>
-concept IsStreamable =
-    is_same_template<std::decay_t<decltype(STREAMABLE::schema)>,
-                     StreamSchema<>>::value;
 
 template <IsStreamable STREAMABLE>
 std::ostream &operator<<(std::ostream &os, const STREAMABLE &streamable) {

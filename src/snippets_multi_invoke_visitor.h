@@ -14,25 +14,14 @@
 #ifndef INCLUDED_SNIPPETS_MULTI_INVOKE_VISITOR_H
 #define INCLUDED_SNIPPETS_MULTI_INVOKE_VISITOR_H
 
+#include <snippets_type_traits.h>
+
 #include <tuple>
 #include <utility>
 #include <variant>
 
 namespace snippets
 {
-
-template <typename T>
-struct is_variant : std::false_type
-{
-};
-
-template <typename... V>
-struct is_variant<std::variant<V...>> : std::true_type
-{
-};
-
-template <typename T>
-constexpr bool is_variant_v = is_variant<T>::value;
 
 template <typename... HANDLERS>
 class MultiInvokeVisitor
