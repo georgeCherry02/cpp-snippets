@@ -2,6 +2,7 @@ find_package(Catch2 3 REQUIRED)
 
 add_executable(
     cpp_snippet_tests
+    abstract_base_class.t.cpp
     multi_invoke_visitor.t.cpp
     pointer_to_member.t.cpp
 )
