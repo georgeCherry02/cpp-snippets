@@ -14,5 +14,5 @@ target_link_libraries(
 
 add_test(
     NAME cpp_snippet_tests
-    COMMAND $<TARGET_FILE:cpp_snippet_tests> -r -console>
+    COMMAND $<TARGET_FILE:cpp_snippet_tests> -r console::out=-::colour-mode=ansi -r JUnit::out=cpp_snippet.unit.tests.xunit.xml
 )
