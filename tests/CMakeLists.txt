@@ -5,6 +5,7 @@ add_executable(
     abstract_base_class.t.cpp
     multi_invoke_visitor.t.cpp
     pointer_to_member.t.cpp
+    scope_guard.t.cpp
     scott_meyers_singleton.t.cpp
 )
 
